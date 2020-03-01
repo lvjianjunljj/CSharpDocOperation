@@ -63,6 +63,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FileOperations.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -93,6 +94,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PDFOperation\PDFOperation.csproj">
+      <Project>{b1312358-c092-4764-b8c7-080438181423}</Project>
+      <Name>PDFOperation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WordOperation\WordOperation.csproj">
+      <Project>{8f786843-dc67-4154-8f17-161e160aa6ab}</Project>
+      <Name>WordOperation</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
