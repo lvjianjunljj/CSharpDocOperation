@@ -78,6 +78,10 @@
                 {
                     content = this.wordFileRead.GetWordContent(filePath);
                 }
+                else
+                {
+                    continue;
+                }
 
                 bool mapping = true;
                 foreach (var searchKey in searchKeys)
