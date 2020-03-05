@@ -1,6 +1,8 @@
 ﻿namespace GatherDoc
 {
     using PDFOperation;
+    using System;
+    using System.Collections.Generic;
     using System.Windows;
     using System.Windows.Input;
     using WordOperation;
@@ -62,45 +64,81 @@
                 return;
             }
 
-            var searchKeys = SearchKeys.Text.Split(new char[] { ';' });
+            var searchAndKeys = new List<string>();
+            var searchOrKeys = new List<string>();
+            string searchKeysString = SearchKeys.Text.Trim();
+            string andKeyWord = "\" and ";
+            string orKeyWord = "\" or ";
+            while (searchKeysString.Contains(andKeyWord))
+            {
+                int index = searchKeysString.IndexOf(andKeyWord);
+                searchAndKeys.Add(searchKeysString.Substring(1, index - 1));
+                searchKeysString = searchKeysString.Substring(index + andKeyWord.Length, searchKeysString.Length - index - andKeyWord.Length);
+            }
+
+            while (searchKeysString.Contains(orKeyWord))
+            {
+                int index = searchKeysString.IndexOf(orKeyWord);
+                searchOrKeys.Add(searchKeysString.Substring(1, index - 1));
+                searchKeysString = searchKeysString.Substring(index + orKeyWord.Length, searchKeysString.Length - index - orKeyWord.Length);
+            }
+            searchOrKeys.Add(searchKeysString.Substring(1, searchKeysString.Length - 2));
 
             var filePaths = fileOperations.GetAllFile(SourcePath.Text);
             foreach (var filePath in filePaths)
             {
-                var filePathSplit = filePath.Split(new char[] { '\\', '/' });
-                string fileName = filePathSplit[filePathSplit.Length - 1];
-                string content = null;
-                if (filePath.EndsWith("pdf"))
+                try
                 {
-                    content = this.pdfFileRead.GetPdfContent(filePath);
-                }
-                else if (filePath.EndsWith("doc") || filePath.EndsWith("docx"))
-                {
-                    content = this.wordFileRead.GetWordContent(filePath);
-                }
-                else
-                {
-                    continue;
-                }
 
-                bool mapping = true;
-                foreach (var searchKey in searchKeys)
-                {
-                    if (!content.Contains(searchKey))
+                    var filePathSplit = filePath.Split(new char[] { '\\', '/' });
+                    string fileName = filePathSplit[filePathSplit.Length - 1];
+                    string content = null;
+                    if (filePath.EndsWith("pdf"))
                     {
-                        mapping = false;
+                        content = this.pdfFileRead.GetPdfContent(filePath);
+                    }
+                    else if (filePath.EndsWith("doc") || filePath.EndsWith("docx"))
+                    {
+                        content = this.wordFileRead.GetWordContent(filePath);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    bool mapping = true;
+
+                    foreach (var searchAndKey in searchAndKeys)
+                    {
+                        if (!content.Contains(searchAndKey))
+                        {
+                            mapping = false;
+                        }
+                    }
+
+                    foreach (var searchOrKey in searchOrKeys)
+                    {
+                        if (content.Contains(searchOrKey))
+                        {
+                            mapping = true;
+                        }
+                    }
+
+
+                    if (mapping)
+                    {
+                        var targetFileName = System.IO.Path.Combine(TargetPath.Text, fileName);
+                        System.IO.File.Copy(filePath, targetFileName, true);
                     }
                 }
-
-                if (mapping)
+                catch (Exception ex)
                 {
-                    var targetFileName = System.IO.Path.Combine(TargetPath.Text, fileName);
-                    System.IO.File.Copy(filePath, targetFileName);
+                    MessageBox.Show($"Error: {ex.Message}");
                 }
 
             }
 
-
+            MessageBox.Show("Complete!!!...");
 
         }
 

@@ -11,9 +11,9 @@
         <TextBox Margin="250,40,150,340" FontSize="20" Name="SourcePath" RenderTransformOrigin="0,0"/>
         <TextBlock Margin="10,120,550,260" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center">target path:</TextBlock>
         <TextBox Margin="250,120,150,260" FontSize="20" Name="TargetPath"/>
-        <TextBlock Margin="10,200,550,180" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center">search keys:</TextBlock>
+        <TextBlock Margin="10,200,550,180" FontSize="25" VerticalAlignment="Center" HorizontalAlignment="Center">Key words:</TextBlock>
         <TextBox Margin="250,200,150,180" FontSize="20" Name="SearchKeys" MouseEnter="SearchMouseEnter" MouseLeave="SearchMouseLeave"/>
-        <TextBlock Margin="250,240,150,140" FontSize="20" >Separate multiple key words with semicolon</TextBlock>
+        <TextBlock Margin="250,240,150,140" FontSize="20" >Boolean search...</TextBlock>
         <Button Content="Gather" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="50" Margin="200,350,0,0" Click="Gather_Click"/>
         <Button Content="Clear" FontSize="25" HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Height="50" Margin="500,350,0,0" Click="Clear_Click"/>
     </Grid>
